@@ -26,6 +26,11 @@
             android:enabled="false"
             android:exported="false"
             android:icon="@mipmap/ic_launcher"/>
+
+        <activity
+            android:name=".activity.SimpleDemoActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

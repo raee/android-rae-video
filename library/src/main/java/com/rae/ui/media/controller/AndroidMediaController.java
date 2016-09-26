@@ -64,7 +64,12 @@ public class AndroidMediaController extends MediaController implements IMediaCon
     }
 
     @Override
-    public void onLoading() {
+    public void onMediaInfo(int what) {
+
+    }
+
+    @Override
+    public void onCompletion() {
 
     }
 

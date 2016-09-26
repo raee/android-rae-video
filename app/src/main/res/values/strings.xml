@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">VideoDemo</string>
+   <!-- <string name="demo_simple_video_url">http://svideo.spriteapp.com/video/2016/0924/57e698c86d35e_wpd.mp4</string>-->
+    <string name="demo_simple_video_url">http://sphmv1-10006658.video.myqcloud.com/sphgoods/1001/ssdfsf24324324a.mp4.f0.mp4</string>
 </resources>

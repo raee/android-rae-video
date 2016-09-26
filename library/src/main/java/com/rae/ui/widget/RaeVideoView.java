@@ -64,4 +64,8 @@ public class RaeVideoView extends IjkVideoView {
             start();
         }
     }
+
+    public static void releaseAll() {
+        MediaPlayerService.setMediaPlayer(null);
+    }
 }

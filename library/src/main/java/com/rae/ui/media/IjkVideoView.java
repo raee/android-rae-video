@@ -376,6 +376,8 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             mPrepareEndTime = System.currentTimeMillis();
             mCurrentState = STATE_PREPARED;
 
+            Log.d(TAG, "onPrepared");
+
             // Get the capabilities of the player for this stream
             // REMOVED: Metadata
             onMediaPlayPrepared(mMediaPlayer);
@@ -438,6 +440,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                     mTargetState = STATE_PLAYBACK_COMPLETED;
                     if (mMediaController != null) {
                         mMediaController.hide();
+                        mMediaController.onCompletion();
                     }
                     if (mOnCompletionListener != null) {
                         mOnCompletionListener.onCompletion(mMediaPlayer);
@@ -450,6 +453,9 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                 public boolean onInfo(IMediaPlayer mp, int arg1, int arg2) {
                     if (mOnInfoListener != null) {
                         mOnInfoListener.onInfo(mp, arg1, arg2);
+                    }
+                    if (mMediaController != null) {
+                        mMediaController.onMediaInfo(arg1);
                     }
                     switch (arg1) {
                         case IMediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
@@ -521,7 +527,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             new IMediaPlayer.OnBufferingUpdateListener() {
                 public void onBufferingUpdate(IMediaPlayer mp, int percent) {
                     mCurrentBufferPercentage = percent;
-                    Log.d(TAG, "buffer..." + percent);
+//                    Log.d(TAG, "buffer..." + percent);
                 }
             };
 
@@ -648,8 +654,9 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     public void release(boolean cleartargetstate) {
         if (mMediaPlayer != null) {
             mMediaPlayer.reset();
-            mMediaPlayer.release();
-            mMediaPlayer = null;
+            MediaPlayerService.setMediaPlayer(null);
+//            mMediaPlayer.release();
+//            mMediaPlayer = null;
             // REMOVED: mPendingSubtitleTracks.clear();
             mCurrentState = STATE_IDLE;
             if (cleartargetstate) {
@@ -658,6 +665,10 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             AudioManager am = (AudioManager) mAppContext.getSystemService(Context.AUDIO_SERVICE);
             am.abandonAudioFocus(null);
         }
+    }
+
+    public void release() {
+        release(true);
     }
 
     @Override
@@ -889,8 +900,6 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         setRender(mCurrentRender);
         return mCurrentRender;
     }
-
-
 
 
     public IMediaPlayer createPlayer() {
