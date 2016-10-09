@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">VideoDemo</string>
-   <!-- <string name="demo_simple_video_url">http://svideo.spriteapp.com/video/2016/0924/57e698c86d35e_wpd.mp4</string>-->
-    <string name="demo_simple_video_url">http://sphmv1-10006658.video.myqcloud.com/sphgoods/1001/ssdfsf24324324a.mp4.f0.mp4</string>
+
+    <string name="demo_single_video_url">http://gedftnj8mkvfefuaefm.exp.bcevod.com/mda-gjajx2a3w0yp8ms6/mda-gjajx2a3w0yp8ms6.mp4</string>
+
+    <string name="demo_simple_video_url">http://svideo.spriteapp.com/video/2016/0924/57e698c86d35e_wpd.mp4</string>
+
+    <string name="demo_basic_video_url">http://gedftnj8mkvfefuaefm.exp.bcevod.com/mda-gi4qwpvnk38dajwd/mda-gi4qwpvnk38dajwd.mp4</string>
+    <string name="demo_basic_video_cover_url">http://ztd00.photos.bdimg.com/ztd/w%3D660%3Bq%3D100/sign=0f9127ca384e251fe2f7e7fe97bdb82a/b8014a90f603738de7d289d2bb1bb051f919eca2.jpg</string>
+
 </resources>

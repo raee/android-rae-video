@@ -1,0 +1,27 @@
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories.mavenDeployer {
+
+        repository(url: 'http://localhost:8081/repository/maven-rae/') {
+            authentication(userName: 'rae', password: '123456')
+        }
+
+        pom.project {
+            version '0.0.1'
+            artifactId 'media'
+            groupId 'com.rae.ui'
+            packaging 'aar'
+        }
+    }
+
+    task androidSourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.sourceFiles
+    }
+
+
+    artifacts {
+        archives androidSourcesJar
+    }
+}

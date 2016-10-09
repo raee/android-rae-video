@@ -1,5 +1,8 @@
 package com.rae.videodemo.activity;
 
+import android.view.View;
+import android.widget.Button;
+
 import com.rae.ui.media.controller.SimpleMediaController;
 import com.rae.ui.widget.RaeVideoView;
 import com.rae.videodemo.R;
@@ -9,8 +12,7 @@ import com.rae.videodemo.R;
  * Created by ChenRui on 2016/9/26 0026 11:48.
  */
 
-public class SimpleDemoActivity extends BaseActivity {
-    private RaeVideoView mVideoView;
+public class SimpleVideoDemoActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
@@ -19,7 +21,20 @@ public class SimpleDemoActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        mVideoView = (RaeVideoView) findViewById(R.id.rae_video);
+        findViewById(R.id.btn_video_volume).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button view = (Button) v;
+                if (view.getText().toString().contains("静音")) {
+                    mVideoView.setVolume(0);
+                    view.setText("恢复");
+                } else {
+                    mVideoView.setVolume(1);
+                    view.setText("静音");
+                }
+
+            }
+        });
 
         // 设置播放路径，这个时候还没有播放。
         mVideoView.setVideoPath(getString(R.string.demo_simple_video_url));
@@ -29,12 +44,13 @@ public class SimpleDemoActivity extends BaseActivity {
         mVideoView.setMediaController(mediaController);
 
         // 开始播放
-//        mVideoView.start();
+        mVideoView.start();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
+        // 停止播放,释放资源
         RaeVideoView.releaseAll();
     }
 }

@@ -12,7 +12,7 @@ import android.widget.MediaController;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.rae.ui.R;
+import com.rae.ui.media.R;
 
 import java.util.Locale;
 
@@ -72,6 +72,8 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
         super(context, attrs);
         inflaterLayout();
         initView();
+
+
     }
 
     private void inflaterLayout() {
@@ -79,9 +81,8 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
         setVisibility(View.GONE);
     }
 
-
+    // 可以重写该方法进行布局初始化操作
     protected void initView() {
-
         mPlayView = getPlayView();
         mSeekBar = getSeekBarView();
         mCurrentTimeView = getCurrentTimeView();
@@ -96,7 +97,6 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
             mSeekBar.setOnSeekBarChangeListener(mSeekListener);
             mSeekBar.setMax(1000);
         }
-
     }
 
     /**
@@ -177,7 +177,6 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
     protected void doPauseResume() {
         if (mPlayer == null) return;
 
-
         if (mPlayer.isPlaying()) {
             mPlayer.pause();
             mHandler.removeMessages(MESSAGE_FADE_OUT);
@@ -186,7 +185,6 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
             mPlayer.start();
             mHandler.sendEmptyMessageDelayed(MESSAGE_FADE_OUT, mDefaultTimeOut);
         }
-
         updatePausePlay(!mPlayView.isSelected());
         mHandler.sendEmptyMessageDelayed(MESSAGE_UPDATE_PLAY_STATE, 300);
         mHandler.sendEmptyMessage(MESSAGE_SHOW_PROGRESS);
@@ -222,7 +220,7 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
         if (mSeekBar != null) {
             if (duration > 0) {
                 // use long to avoid overflow
-                long pos = 1000L * position / duration;
+                long pos = mSeekBar.getMax() * position / duration;
                 mSeekBar.setProgress((int) pos);
             }
             int percent = mPlayer.getBufferPercentage();
@@ -235,7 +233,7 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
             mCurrentTimeView.setText(buildTimeMilli(position));
 
 
-        onVideoProgressChange(position, duration);
+        onVideoProgressChange(position, duration, mCurrentTimeView.getText(), mEndTimeView.getText());
 
         return position;
     }
@@ -243,10 +241,12 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
     /**
      * 显示进度回调
      *
-     * @param position 当前播放进度
-     * @param duration 总长度
+     * @param position         当前播放进度
+     * @param duration         总长度
+     * @param currentTimeMilli 计算好的当前播放时间
+     * @param endTimeMilli     计算好的总视频时间
      */
-    protected void onVideoProgressChange(int position, int duration) {
+    protected void onVideoProgressChange(int position, int duration, CharSequence currentTimeMilli, CharSequence endTimeMilli) {
 
     }
 
@@ -355,6 +355,12 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
 
     // 更新加载状态
     protected void updateLoadingBar(boolean show) {
+//        if (show) {
+//            mHandler.removeMessages(MESSAGE_FADE_OUT);
+//        } else {
+//            mHandler.sendEmptyMessageDelayed(MESSAGE_FADE_OUT, mDefaultTimeOut);
+//        }
+
         if (mPlayer == null || !mPlayer.isPlaying()) return;
 
         // 显示加载中
@@ -368,6 +374,8 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
 
     @Override
     public void onCompletion() {
-
+        mHandler.removeMessages(MESSAGE_SHOW_PROGRESS);
+        mHandler.removeMessages(MESSAGE_FADE_OUT);
     }
+
 }

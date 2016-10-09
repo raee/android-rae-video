@@ -56,13 +56,13 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     private Map<String, String> mHeaders;
 
     // all possible internal states
-    private static final int STATE_ERROR = -1;
-    private static final int STATE_IDLE = 0;
-    private static final int STATE_PREPARING = 1;
-    private static final int STATE_PREPARED = 2;
-    private static final int STATE_PLAYING = 3;
-    private static final int STATE_PAUSED = 4;
-    private static final int STATE_PLAYBACK_COMPLETED = 5;
+    protected static final int STATE_ERROR = -1;
+    protected static final int STATE_IDLE = 0;
+    protected static final int STATE_PREPARING = 1;
+    protected static final int STATE_PREPARED = 2;
+    protected static final int STATE_PLAYING = 3;
+    protected static final int STATE_PAUSED = 4;
+    protected static final int STATE_PLAYBACK_COMPLETED = 5;
 
     // mCurrentState is a VideoView object's current state.
     // mTargetState is the state that a method caller intends to reach.
@@ -101,7 +101,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     // private RenderingWidget.OnChangedListener mSubtitlesChangedListener;
 
     private Context mAppContext;
-    private IRenderView mRenderView;
+    protected IRenderView mRenderView;
     private int mVideoSarNum;
     private int mVideoSarDen;
 
