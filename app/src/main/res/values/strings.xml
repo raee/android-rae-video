@@ -1,11 +1,17 @@
 <resources>
-    <string name="app_name">VideoDemo</string>
+    <string name="app_name">RaeVideoView</string>
 
-    <string name="demo_single_video_url">http://gedftnj8mkvfefuaefm.exp.bcevod.com/mda-gjajx2a3w0yp8ms6/mda-gjajx2a3w0yp8ms6.mp4</string>
+    <!--单个视频演示视频地址-->
+    <string name="demo_video_url_single">http://gedftnj8mkvfefuaefm.exp.bcevod.com/mda-gjajx2a3w0yp8ms6/mda-gjajx2a3w0yp8ms6.mp4</string>
 
-    <string name="demo_simple_video_url">http://svideo.spriteapp.com/video/2016/0924/57e698c86d35e_wpd.mp4</string>
+    <!--简单版演示视频地址-->
+    <string name="demo_video_url_simple">http://svideo.spriteapp.com/video/2016/0924/57e698c86d35e_wpd.mp4</string>
 
-    <string name="demo_basic_video_url">http://gedftnj8mkvfefuaefm.exp.bcevod.com/mda-gi4qwpvnk38dajwd/mda-gi4qwpvnk38dajwd.mp4</string>
-    <string name="demo_basic_video_cover_url">http://ztd00.photos.bdimg.com/ztd/w%3D660%3Bq%3D100/sign=0f9127ca384e251fe2f7e7fe97bdb82a/b8014a90f603738de7d289d2bb1bb051f919eca2.jpg</string>
+    <!--简单版演示封面图地址-->
+    <string name="demo_cover_url_simple">http://ztd00.photos.bdimg.com/ztd/w%3D660%3Bq%3D100/sign=3d71872ad943ad4ba62e45c6b2392b92/6c224f4a20a44623edb5dfed9022720e0df3d7c6.jpg</string>
+
+    <string name="demo_basic_video_url">http://gedftnj8mkvfefuaefm.exp.bcevod.com/mda-gi3a0uzh70c45ghh/mda-gi3a0uzh70c45ghh.mp4</string>
+
+    <string name="demo_basic_video_title">星座老司机-星座八怪</string>
 
 </resources>

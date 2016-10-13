@@ -26,12 +26,12 @@ import android.view.View;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 public interface IRenderView {
-    int AR_ASPECT_FIT_PARENT = 0; // without clip
-    int AR_ASPECT_FILL_PARENT = 1; // may clip
-    int AR_ASPECT_WRAP_CONTENT = 2;
-    int AR_MATCH_PARENT = 3;
-    int AR_16_9_FIT_PARENT = 4;
-    int AR_4_3_FIT_PARENT = 5;
+    int AR_ASPECT_FIT_PARENT = 0; // 超出填满窗口,不会裁剪视频
+    int AR_ASPECT_FILL_PARENT = 1; // 填满窗口,会裁剪视频
+    int AR_ASPECT_WRAP_CONTENT = 2; // 自适应
+    int AR_MATCH_PARENT = 3; // 填满窗口
+    int AR_16_9_FIT_PARENT = 4; // 16:9 视频
+    int AR_4_3_FIT_PARENT = 5; // 4:3 视频
 
     View getView();
 

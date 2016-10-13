@@ -26,6 +26,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 public class MediaPlayerService extends Service {
     private static IMediaPlayer sMediaPlayer;
+    private static MediaPlayerService mediaPlayerService;
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, MediaPlayerService.class);
@@ -36,13 +37,22 @@ public class MediaPlayerService extends Service {
         context.startService(newIntent(context));
     }
 
-    public static void intentToStop(Context context) {
-        context.stopService(newIntent(context));
+    public static void intentToStop() {
+        if (mediaPlayerService != null) {
+            mediaPlayerService.stopSelf();
+        }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mediaPlayerService = this;
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+
         return null;
     }
 

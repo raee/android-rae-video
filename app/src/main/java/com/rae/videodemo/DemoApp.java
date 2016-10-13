@@ -1,6 +1,8 @@
 package com.rae.videodemo;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LargestLimitedMemoryCache;
@@ -39,7 +41,14 @@ public class DemoApp extends Application {
                 .defaultDisplayImageOptions(new DisplayImageOptions.Builder()
                         .cacheOnDisk(true)
                         .cacheInMemory(true).build()) // default
+                .writeDebugLogs()
                 .build();
         ImageLoader.getInstance().init(configuration);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }

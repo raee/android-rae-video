@@ -2,18 +2,26 @@ package com.rae.videodemo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.rae.videodemo.activity.BaseActivity;
-import com.rae.videodemo.activity.BasicVideoDemoActivity;
-import com.rae.videodemo.activity.SingleVideoDemoActivity;
+import com.rae.videodemo.activity.FullScreenVideoDemoActivity;
 import com.rae.videodemo.activity.SimpleVideoDemoActivity;
+import com.rae.videodemo.activity.SingleVideoDemoActivity;
 
 
 public class MainActivity extends BaseActivity {
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
 
     @Override
     protected int getLayoutId() {
@@ -48,7 +56,7 @@ public class MainActivity extends BaseActivity {
         private DemoListViewHolder[] mDataList = new DemoListViewHolder[]{
                 new DemoListViewHolder("单播放器版", SingleVideoDemoActivity.class),
                 new DemoListViewHolder("简单版播放器", SimpleVideoDemoActivity.class),
-                new DemoListViewHolder("基础版播放器", BasicVideoDemoActivity.class)
+                new DemoListViewHolder("全屏播放器", FullScreenVideoDemoActivity.class)
         };
 
         public DemoListViewAdapter(Context context) {

@@ -9,10 +9,23 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowActionBarOverlay">@null</item>
         <item name="actionBarStyle">@style/AppActionBarTheme</item>
+        <item name="android:buttonStyle">@style/RaeButton</item>
     </style>
+
 
     <style name="AppActionBarTheme" parent="Base.Widget.AppCompat.Light.ActionBar.Solid">
         <item name="elevation">0dp</item>
+    </style>
+
+    <style name="AppTheme.FullScreen">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="RaeButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/default_button_selector</item>
+        <item name="android:textColor">@color/text_color_default_button_selector</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 </resources>

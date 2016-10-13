@@ -15,7 +15,7 @@ public class SingleVideoDemoActivity extends BaseActivity {
     @Override
     protected void initView() {
         // 设置播放地址
-        mVideoView.setVideoPath(getString(R.string.demo_single_video_url));
+        mVideoView.setVideoPath(getString(R.string.demo_video_url_single));
 
         // 开始播放
         mVideoView.start();

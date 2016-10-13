@@ -14,33 +14,38 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!--所有DEMO-->
         <activity android:name=".MainActivity">
-
-        </activity>
-
-        <service
-            android:name="com.rae.ui.services.MediaPlayerService"
-            android:enabled="false"
-            android:exported="false"
-            android:icon="@mipmap/ic_launcher"/>
-
-        <activity
-            android:name=".activity.SingleVideoDemoActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity
-            android:name=".activity.SimpleVideoDemoActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity
-            android:name=".activity.BasicVideoDemoActivity"
-            android:screenOrientation="portrait"
-            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+
+
+        <!--单个播放器DEMO-->
+        <activity
+            android:name=".activity.SingleVideoDemoActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <!--简单版播放器DEMO-->
+        <activity
+            android:name=".activity.SimpleVideoDemoActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <!--全屏播放DEMO-->
+        <activity
+            android:name=".activity.FullScreenVideoDemoActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen">
+
         </activity>
     </application>
 

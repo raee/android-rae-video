@@ -344,6 +344,9 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
     @Override
     public void onMediaInfo(int what) {
         switch (what) {
+            case IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+                updatePausePlay();
+                break;
             case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
                 updateLoadingBar(true);
                 break;

@@ -26,8 +26,7 @@
         android:layout_alignParentBottom="true"
         android:background="#90000000"
         android:gravity="center"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp">
+        android:paddingLeft="12dp">
 
         <TextView
             android:id="@+id/tv_media_current_time"
@@ -51,6 +50,13 @@
             android:layout_height="wrap_content"
             android:text="00:00"
             android:textColor="#FFFFFF"/>
+
+        <ImageView
+            android:id="@+id/img_media_full_screen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:src="@drawable/rae_media_full_screen"/>
     </LinearLayout>
 
 </RelativeLayout>

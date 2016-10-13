@@ -171,6 +171,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             return;
 
         mRenderView = renderView;
+
         renderView.setAspectRatio(mCurrentAspectRatio);
         if (mVideoWidth > 0 && mVideoHeight > 0)
             renderView.setVideoSize(mVideoWidth, mVideoHeight);
@@ -183,7 +184,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                 LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER);
         renderUIView.setLayoutParams(lp);
-        addView(renderUIView);
+        addView(renderUIView, 0);
 
         mRenderView.addRenderCallback(mSHCallback);
         mRenderView.setVideoRotation(mVideoRotationDegree);
@@ -274,6 +275,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             // not ready for playback just yet, will try again later
             return;
         }
+
         // we shouldn't clear the target state, because somebody might have
         // called start() previously
         release(false);
@@ -849,7 +851,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             IRenderView.AR_ASPECT_FIT_PARENT,
             IRenderView.AR_ASPECT_FILL_PARENT,
             IRenderView.AR_ASPECT_WRAP_CONTENT,
-            // IRenderView.AR_MATCH_PARENT,
+            IRenderView.AR_MATCH_PARENT,
             IRenderView.AR_16_9_FIT_PARENT,
             IRenderView.AR_4_3_FIT_PARENT};
     private int mCurrentAspectRatioIndex = 0;
@@ -865,6 +867,19 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         return mCurrentAspectRatio;
     }
 
+    /**
+     * 设置画面比例
+     *
+     * @param index
+     */
+    public void setCurrentAspectRatio(int index) {
+        if (mRenderView != null) {
+            mCurrentAspectRatioIndex = index;
+            mCurrentAspectRatio = s_allAspectRatio[index % s_allAspectRatio.length];
+            mRenderView.setAspectRatio(index);
+        }
+    }
+
     //-------------------------
     // Extend: Render
     //-------------------------
@@ -876,7 +891,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     private int mCurrentRenderIndex = 0;
     private int mCurrentRender = RENDER_NONE;
 
-    private void initRenders() {
+    protected void initRenders() {
         mAllRenders.clear();
 
 //        if (mSettings.getEnableSurfaceView())
@@ -887,7 +902,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 //            mAllRenders.add(RENDER_NONE);
 
         if (mAllRenders.isEmpty())
-            mAllRenders.add(RENDER_SURFACE_VIEW);
+            mAllRenders.add(RENDER_TEXTURE_VIEW);
         mCurrentRender = mAllRenders.get(mCurrentRenderIndex);
         setRender(mCurrentRender);
     }
@@ -908,8 +923,6 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         }
 
         IMediaPlayer mediaPlayer;
-
-
         IjkMediaPlayer ijkMediaPlayer = null;
         if (mUri != null) {
             ijkMediaPlayer = new IjkMediaPlayer();
@@ -947,7 +960,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "start-on-prepared", 0);
 
-            ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "http-detect-range-support", 0);
+//            ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "http-detect-range-support", 1);
 
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 48);
 
