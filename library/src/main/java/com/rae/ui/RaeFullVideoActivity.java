@@ -1,5 +1,6 @@
 package com.rae.ui;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,21 +37,24 @@ public class RaeFullVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rae_full_video_activity);
         mVideoView = (RaeVideoView) findViewById(R.id.rae_video_view);
-        mMediaController = new FullScreenMediaController(this, mVideoView);
+        mMediaController = new FullScreenMediaController(this);
         mVideoView.setMediaController(mMediaController);
         mVideoView.setCurrentAspectRatio(IRenderView.AR_ASPECT_FILL_PARENT); // 设置为视频填满全屏
         mMediaController.toggleFullScreen();
         start();
+
+        String title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
+        if (title != null)
+            setTitle(title);
     }
 
     protected void start() {
-//        mVideoView.requestView();
         mVideoView.start();
     }
 
     @Override
     public void setTitle(CharSequence title) {
         super.setTitle(title);
-        mMediaController.setTitle(title.toString());
+        mMediaController.setTitle(title.toString()); // 设置标题
     }
 }

@@ -11,6 +11,8 @@ import android.widget.ListView;
 
 import com.rae.videodemo.activity.BaseActivity;
 import com.rae.videodemo.activity.FullScreenVideoDemoActivity;
+import com.rae.videodemo.activity.ListViewDemoActivity;
+import com.rae.videodemo.activity.RaeVideoLayoutDemoActivity;
 import com.rae.videodemo.activity.SimpleVideoDemoActivity;
 import com.rae.videodemo.activity.SingleVideoDemoActivity;
 
@@ -56,7 +58,9 @@ public class MainActivity extends BaseActivity {
         private DemoListViewHolder[] mDataList = new DemoListViewHolder[]{
                 new DemoListViewHolder("单播放器版", SingleVideoDemoActivity.class),
                 new DemoListViewHolder("简单版播放器", SimpleVideoDemoActivity.class),
-                new DemoListViewHolder("全屏播放器", FullScreenVideoDemoActivity.class)
+                new DemoListViewHolder("全屏播放器", FullScreenVideoDemoActivity.class),
+                new DemoListViewHolder("标准版播放器(带封面图)", RaeVideoLayoutDemoActivity.class),
+                new DemoListViewHolder("ListView", ListViewDemoActivity.class)
         };
 
         public DemoListViewAdapter(Context context) {

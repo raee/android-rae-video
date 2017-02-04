@@ -10,8 +10,20 @@
         <item name="windowActionBarOverlay">@null</item>
         <item name="actionBarStyle">@style/AppActionBarTheme</item>
         <item name="android:buttonStyle">@style/RaeButton</item>
+        <!--<item name="RaeMediaControllerStyle">@style/CustomerMediaControllerStyle</item>-->
+        <item name="RaeMediaControllerLoadingStyle">@style/CustomerMediaControllerLoadingStyle
+        </item>
     </style>
 
+    <!-- 自定义播放器样式 -->
+    <style name="CustomerMediaControllerStyle">
+        <item name="playBackground">@mipmap/ic_launcher</item>
+    </style>
+
+    <!-- 自定义播放器加载中样式 -->
+    <style name="CustomerMediaControllerLoadingStyle" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminateDrawable">@drawable/rae_media_loading</item>
+    </style>
 
     <style name="AppActionBarTheme" parent="Base.Widget.AppCompat.Light.ActionBar.Solid">
         <item name="elevation">0dp</item>

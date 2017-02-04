@@ -39,6 +39,10 @@ public class DemoApp extends Application {
                 .diskCacheFileNameGenerator(new HashCodeFileNameGenerator()) // default
                 .imageDownloader(new BaseImageDownloader(this, 5 * 1000, 30 * 1000)) // default
                 .defaultDisplayImageOptions(new DisplayImageOptions.Builder()
+                        //.displayer(new FadeInBitmapDisplayer(300))
+                        .showImageOnLoading(R.mipmap.rae_video_placeholder)
+                        .showImageForEmptyUri(R.mipmap.rae_video_placeholder)
+                        .showImageOnFail(R.mipmap.rae_video_placeholder)
                         .cacheOnDisk(true)
                         .cacheInMemory(true).build()) // default
                 .writeDebugLogs()

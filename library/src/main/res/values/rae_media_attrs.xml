@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="RaeVideoView">
+
+
+    <attr name="RaeMediaControllerStyle" format="reference"/>
+    <attr name="RaeMediaControllerLoadingStyle" format="reference"/>
+    <attr name="RaeMediaControllerSeekBarStyle" format="reference"/>
+
+    <declare-styleable name="RaeMediaController">
+        <!--播放按钮图片,selector 格式-->
+        <attr name="playBackground" format="reference"/>
     </declare-styleable>
+
+
 </resources>

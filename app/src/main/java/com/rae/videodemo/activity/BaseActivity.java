@@ -8,6 +8,17 @@ import android.view.MenuItem;
 import com.rae.ui.widget.RaeVideoView;
 import com.rae.videodemo.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by ChenRui on 2016/9/26 0026 11:48.
  */
@@ -51,5 +62,54 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getLayoutId();
 
     protected abstract void initView();
+
+
+    // 获取示例数据,不用细看
+    protected List<ListViewDemoViewModel> readerDemoDataJson() {
+        List<ListViewDemoViewModel> result = new ArrayList<>();
+
+        try {
+            InputStream stream = getAssets().open("demo.json");
+            BufferedInputStream bs = new BufferedInputStream(stream);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            int len = 0;
+            byte[] temp = new byte[128];
+            while ((len = bs.read(temp)) != -1) {
+                out.write(temp, 0, len);
+            }
+            String json = out.toString();
+
+            bs.close();
+            stream.close();
+            out.close();
+
+            JSONArray arr = new JSONArray(json);
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+
+                ListViewDemoViewModel model = new ListViewDemoViewModel(obj.getString("media_path"), obj.getString("media_cover"));
+                result.add(model);
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return result;
+    }
+
+    protected class ListViewDemoViewModel {
+        public String videoPath;
+        public String videoCover;
+
+        public ListViewDemoViewModel(String videoPath, String videoCover) {
+            this.videoPath = videoPath;
+            this.videoCover = videoCover;
+        }
+    }
 
 }

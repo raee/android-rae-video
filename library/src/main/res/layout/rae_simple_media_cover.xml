@@ -13,17 +13,28 @@
         android:scaleType="centerCrop"/>
 
     <ImageView
+        android:id="@+id/img_media_cover_alpha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/rae_media_cover_alpha"
+        android:visibility="gone"/>
+
+    <ImageView
         android:id="@+id/img_media_cover_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@mipmap/ic_play_resume"/>
+        android:src="@mipmap/rae_media_ic_play_resume"
+        android:visibility="visible"/>
 
     <ProgressBar
         android:id="@+id/progressBar_cover_loading"
+        style="?attr/RaeMediaControllerLoadingStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:indeterminateDrawable="@drawable/rae_media_loading"
         android:visibility="gone"/>
 
 

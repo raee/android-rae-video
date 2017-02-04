@@ -4,9 +4,11 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.rae.ui.widget.RaeVideoLayout
-        android:id="@+id/rae_video_layout"
+    <ListView
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:divider="#f1f1f1"
+        android:dividerHeight="8dp"/>
 
 </LinearLayout>

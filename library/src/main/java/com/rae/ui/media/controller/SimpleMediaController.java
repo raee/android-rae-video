@@ -6,13 +6,14 @@ import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rae.ui.RaeFullVideoActivity;
+import com.rae.ui.media.IRaeMediaPlayerController;
 import com.rae.ui.media.R;
-import com.rae.ui.widget.RaeVideoView;
 
 import java.util.Locale;
 
@@ -25,10 +26,10 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 public class SimpleMediaController extends RaeMediaController implements IMediaPlayer.OnErrorListener {
 
     protected View mFullScreenView;
-    protected RaeVideoView mVideoView;
+    protected IRaeMediaPlayerController mVideoView;
 
     /**
-     * 推荐使用{@link #SimpleMediaController(Context, RaeVideoView)}
+     * 推荐使用
      *
      * @param context
      */
@@ -40,24 +41,18 @@ public class SimpleMediaController extends RaeMediaController implements IMediaP
         super(context, attrs);
     }
 
-    /**
-     * @param context
-     * @param parentView 附加到的父容器中的RaeVideoView。
-     */
-    public SimpleMediaController(Context context, RaeVideoView parentView) {
-        super(context);
-        if (parentView == null) {
-            throw new NullPointerException("RaeVideoView is null!");
-        }
-        setVideoView(parentView);
-        parentView.addView(this);
-        parentView.setOnErrorListener(this);
+    @Override
+    protected void initView() {
+        super.initView();
         mFullScreenView = findViewById(R.id.img_media_full_screen);
         setFullScreenClickListener(this);
     }
 
-    protected void setVideoView(RaeVideoView view) {
-        mVideoView = view;
+    @Override
+    public void setMediaPlayer(MediaController.MediaPlayerControl player) {
+        super.setMediaPlayer(player);
+        mVideoView = (IRaeMediaPlayerController) player;
+        mVideoView.addOnErrorListener(this);
     }
 
 
@@ -65,7 +60,9 @@ public class SimpleMediaController extends RaeMediaController implements IMediaP
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.img_media_full_screen) {
-            getContext().startActivity(new Intent(getContext(), RaeFullVideoActivity.class));
+            Intent intent = new Intent(getContext(), RaeFullVideoActivity.class);
+            intent.putExtra(Intent.EXTRA_TITLE, mVideoView.getVideoTitle());
+            getContext().startActivity(intent);
         }
     }
 
@@ -97,7 +94,11 @@ public class SimpleMediaController extends RaeMediaController implements IMediaP
     @Override
     public void show() {
         // 控制器的高度 = 视频的高度
-        getLayoutParams().height = mVideoView.getHeight();
+        if (getLayoutParams() != null && getParent() != null) {
+            int height = ((View) getParent()).getHeight();
+            if (height > 0)
+                getLayoutParams().height = height;
+        }
         super.show();
     }
 

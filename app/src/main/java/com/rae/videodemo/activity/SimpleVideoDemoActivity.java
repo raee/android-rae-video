@@ -37,10 +37,10 @@ public class SimpleVideoDemoActivity extends BaseActivity {
         });
 
         // 设置播放路径，这个时候还没有播放。
-        mVideoView.setVideoPath(getString(R.string.demo_video_url_simple));
+        mVideoView.setVideoPath(getString(R.string.demo_basic_video_url));
 
         // 设置播放控制
-        SimpleMediaController mediaController = new SimpleMediaController(this, mVideoView);
+        SimpleMediaController mediaController = new SimpleMediaController(this);
         mVideoView.setMediaController(mediaController);
 
         // 开始播放

@@ -1,8 +1,12 @@
 package com.rae.ui.widget;
 
 import android.content.Context;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ViewTreeObserver;
 
 import com.rae.ui.media.IjkVideoView;
 import com.rae.ui.services.MediaPlayerService;
@@ -14,23 +18,53 @@ import com.rae.ui.services.MediaPlayerService;
 public class RaeVideoView extends IjkVideoView {
 
     private static final int STATE_WINDOW_FOCUS_CHANGE = 6;
-    //    public static final int VIEW_TYPE_COVER = 1; // 封面图
-//    public static final int VIEW_TYPE_COMPLETION = 2; // 视频播放完成时显示。
-//    private final HashMap<Integer, View> mViewHashMap = new LinkedHashMap<>(); // 视图集合
-//    private long mCurrentPosition; // 保存当前播放进度
-    private String mVideoPath;
+
+    private static final int MESSAGE_RESUME = 0;
+    private static final int MESSAGE_PAUSE = 1;
+    private static final int MESSAGE_REQUEST_VIEW = 2;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == MESSAGE_RESUME) {
+                onResume();
+            }
+            if (msg.what == MESSAGE_PAUSE) {
+                onPause();
+            }
+            if (msg.what == MESSAGE_REQUEST_VIEW) {
+                Log.i("rae", "requestView:" + getContext().getClass());
+                setRender(RENDER_TEXTURE_VIEW);
+                requestLayout();
+                invalidate();
+            }
+
+        }
+    };
+
 
     public RaeVideoView(Context context, AttributeSet attrs) {
         super(context, attrs);
-//        if (attrs != null) {
-//            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RaeVideoView);
-//            int len = a.getIndexCount();
-//            for (int i = 0; i < len; i++) {
-//                int index = a.getIndex(i);
-//            }
-//            a.recycle();
-//        }
+        getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (!isShown()) {
+                    onDestroy();
+                }
+
+                if (!isShown() && isPlaying()) {
+                    postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            release();
+                        }
+                    }, 500);
+                }
+            }
+        });
     }
+
 
     /**
      * 设置播放声音
@@ -47,25 +81,28 @@ public class RaeVideoView extends IjkVideoView {
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
         if (hasWindowFocus) {
-            onResume();
+            mHandler.removeMessages(MESSAGE_RESUME);
+            mHandler.sendEmptyMessage(MESSAGE_RESUME);
         } else {
-            onPause();
+            mHandler.removeMessages(MESSAGE_PAUSE);
+            mHandler.sendEmptyMessage(MESSAGE_PAUSE);
         }
     }
 
+    private void log(String msg) {
+        Log.d("Rae", msg);
+    }
 
     public void onCreate() {
-
     }
 
     public void onDestroy() {
-
     }
 
     // 进入前台
     public void onResume() {
         if (mMediaPlayer == null) return;
-        Log.d("rae", "来到前台:" + getContext().getClass());
+        Log.d("rae", "来到前台:" + getVideoPath());
         int targetState = mTargetState;
         int currentState = mCurrentState;
         requestView();
@@ -90,52 +127,11 @@ public class RaeVideoView extends IjkVideoView {
      */
     public void requestView() {
         if (mMediaPlayer == null) return;
-        mCurrentState = mMediaPlayer.isPlaying() ? STATE_PLAYING : STATE_PAUSED;
-        postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.i("rae", "requestView");
-                setRender(RENDER_TEXTURE_VIEW);
-                requestLayout();
-                invalidate();
-            }
-        }, 100);
+        if (mCurrentState != STATE_PLAYBACK_COMPLETED)
+            mCurrentState = mMediaPlayer.isPlaying() ? STATE_PLAYING : STATE_PAUSED;
+        mHandler.sendEmptyMessageDelayed(MESSAGE_REQUEST_VIEW, 100);
     }
 
-//
-//    // 添加视图
-//    public void addView(int viewType, View view) {
-//
-//        // 移除已经存在的View
-//        if (mViewHashMap.containsKey(viewType)) {
-//            removeView(mViewHashMap.get(viewType));
-//        }
-//
-//        // 添加View
-//        mViewHashMap.put(viewType, view);
-//
-//        // 初始化View的显示
-//        switch (viewType) {
-//            case VIEW_TYPE_COVER:
-//                view.setVisibility(View.VISIBLE);
-//                break;
-//            default:
-//                view.setVisibility(View.GONE);
-//                break;
-//        }
-//
-//        addView(view);
-//    }
-
-    @Override
-    public void setVideoPath(String path) {
-//        if (mVideoPath == null && mViewHashMap.containsKey(VIEW_TYPE_COVER)) {
-//            mVideoPath = path;
-//            return;
-//        }
-        mVideoPath = path;
-        super.setVideoPath(path);
-    }
 
     @Override
     protected void onAttachedToWindow() {
@@ -150,12 +146,23 @@ public class RaeVideoView extends IjkVideoView {
     }
 
     public String getVideoPath() {
-        return mVideoPath;
+        return mUri == null ? null : mUri.toString();
+    }
+
+    public Uri getVideoUri() {
+        return mUri;
+    }
+
+    @Override
+    public void release() {
+        setVolume(0);
+        super.release();
     }
 
     public static void releaseAll() {
         MediaPlayerService.setMediaPlayer(null);
         MediaPlayerService.intentToStop();
     }
+
 
 }

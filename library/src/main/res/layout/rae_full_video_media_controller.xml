@@ -5,24 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="#90000000"
-        android:gravity="center_vertical"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp">
-
-        <TextView
-            android:id="@+id/tv_media_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp"/>
-
-    </LinearLayout>
-
     <ImageView
         android:id="@+id/img_media_play"
         android:layout_width="wrap_content"
@@ -33,6 +15,7 @@
 
     <ProgressBar
         android:id="@+id/progressBar_loading"
+        style="?attr/RaeMediaControllerLoadingStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -54,13 +37,13 @@
             android:textColor="#FFFFFF"/>
 
         <SeekBar
-
             android:id="@+id/progressBar_media"
-            style="?android:attr/progressBarStyleHorizontal"
+            style="?attr/RaeMediaControllerSeekBarStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:progress="10"/>
+            android:progressDrawable="@drawable/rae_media_seek_bar"
+            android:thumb="@drawable/rae_media_seek_thumb"/>
 
         <TextView
             android:id="@+id/tv_media_end_time"
@@ -75,6 +58,32 @@
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:src="@drawable/rae_media_full_screen"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#90000000"
+        android:gravity="center_vertical"
+        android:paddingRight="12dp">
+
+        <ImageView
+            android:id="@+id/img_media_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/rae_media_ic_back"/>
+
+        <TextView
+            android:id="@+id/tv_media_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"/>
+
     </LinearLayout>
 
 </RelativeLayout>

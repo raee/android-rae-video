@@ -34,6 +34,8 @@ public interface IMediaController {
 
     void show();
 
+    void reset();
+
     /**
      * @param what 查看{@link tv.danmaku.ijk.media.player.IMediaPlayer} MEDIA_INFO_* 开始的常量。
      */

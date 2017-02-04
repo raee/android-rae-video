@@ -61,6 +61,7 @@ public class MediaPlayerService extends Service {
             if (sMediaPlayer.isPlaying())
                 sMediaPlayer.stop();
             sMediaPlayer.release();
+            // 通知视频被释放了
             sMediaPlayer = null;
         }
         sMediaPlayer = mp;

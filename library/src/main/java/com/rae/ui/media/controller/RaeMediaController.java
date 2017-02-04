@@ -1,11 +1,14 @@
 package com.rae.ui.media.controller;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.MediaController;
@@ -25,6 +28,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
  */
 public abstract class RaeMediaController extends FrameLayout implements IMediaController, View.OnClickListener {
 
+    private static final String TAG = "RaeMediaController";
     protected static final int MESSAGE_FADE_OUT = 0;
     protected static final int MESSAGE_SHOW_PROGRESS = 1;
     protected static final int MESSAGE_UPDATE_PLAY_STATE = 2;
@@ -52,7 +56,7 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
                     break;
                 case MESSAGE_SHOW_PROGRESS:
                     int pos = setProgress();
-                    if (!mDragging && isShowing() && mPlayer.isPlaying()) {
+                    if (mPlayer != null && !mDragging && isShowing() && mPlayer.isPlaying()) {
                         msg = obtainMessage(MESSAGE_SHOW_PROGRESS);
                         sendMessageDelayed(msg, 1000 - (pos % 1000));
                     }
@@ -62,23 +66,33 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
     };
 
     public RaeMediaController(Context context) {
-        super(context);
-        inflaterLayout();
-        initView();
+        this(context, null);
     }
 
 
     public RaeMediaController(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        inflaterLayout();
-        initView();
-
-
+        this(context, attrs, R.attr.RaeMediaControllerStyle);
     }
 
+    public RaeMediaController(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        inflaterLayout();
+        initView();
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RaeMediaController, defStyleAttr, 0);
+        int len = a.getIndexCount();
+        for (int i = 0; i < len; i++) {
+            int index = a.getIndex(i);
+            if (index == R.styleable.RaeMediaController_playBackground) {
+                mPlayView.setImageDrawable(a.getDrawable(index));
+            }
+        }
+        a.recycle();
+    }
+
+    // 初始化布局文件
     private void inflaterLayout() {
         LayoutInflater.from(getContext()).inflate(getLayoutId(), this);
-        setVisibility(View.GONE);
+        setVisibility(GONE);
     }
 
     // 可以重写该方法进行布局初始化操作
@@ -151,15 +165,13 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
     @Override
     public void show(int timeout) {
         setVisibility(View.VISIBLE);
-
         updatePausePlay();
         mHandler.sendEmptyMessage(MESSAGE_SHOW_PROGRESS);
-        if (timeout != 0) {
+        if (timeout > 0) {
             mHandler.removeMessages(MESSAGE_FADE_OUT);
             Message msg = mHandler.obtainMessage(MESSAGE_FADE_OUT);
             mHandler.sendMessageDelayed(msg, timeout);
         }
-
     }
 
     @Override
@@ -180,13 +192,14 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
         if (mPlayer.isPlaying()) {
             mPlayer.pause();
             mHandler.removeMessages(MESSAGE_FADE_OUT);
-            show(360000);
+            show(0);
         } else {
             mPlayer.start();
             mHandler.sendEmptyMessageDelayed(MESSAGE_FADE_OUT, mDefaultTimeOut);
         }
+
         updatePausePlay(!mPlayView.isSelected());
-        mHandler.sendEmptyMessageDelayed(MESSAGE_UPDATE_PLAY_STATE, 300);
+        mHandler.sendEmptyMessageDelayed(MESSAGE_UPDATE_PLAY_STATE, 150);
         mHandler.sendEmptyMessage(MESSAGE_SHOW_PROGRESS);
     }
 
@@ -297,7 +310,7 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
             mDragging = false;
             setProgress();
             updatePausePlay();
-            show(mDefaultTimeOut);
+            show();
 
             // Ensure that progress is properly updated in the future,
             // the call to show() does not guarantee this because it is a
@@ -334,11 +347,21 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
 
     @Override
     public void setAnchorView(View view) {
-
+        // attach to parent
+        if (this.getParent() != null) {
+            // has attach
+            return;
+        } else if (view instanceof ViewGroup) {
+            ViewGroup parent = (ViewGroup) view;
+            parent.addView(this, 1); // add in SurfaceView top
+        } else {
+            Log.e(TAG, "rae media controller parent view isn't ViewGroup");
+        }
     }
 
     @Override
     public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
     }
 
     @Override
@@ -358,12 +381,6 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
 
     // 更新加载状态
     protected void updateLoadingBar(boolean show) {
-//        if (show) {
-//            mHandler.removeMessages(MESSAGE_FADE_OUT);
-//        } else {
-//            mHandler.sendEmptyMessageDelayed(MESSAGE_FADE_OUT, mDefaultTimeOut);
-//        }
-
         if (mPlayer == null || !mPlayer.isPlaying()) return;
 
         // 显示加载中
@@ -381,4 +398,8 @@ public abstract class RaeMediaController extends FrameLayout implements IMediaCo
         mHandler.removeMessages(MESSAGE_FADE_OUT);
     }
 
+    @Override
+    public void reset() {
+        Log.d("RaeMediaController", "重置播放控制器");
+    }
 }

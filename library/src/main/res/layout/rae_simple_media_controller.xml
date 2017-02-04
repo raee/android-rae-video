@@ -12,12 +12,13 @@
         android:layout_centerInParent="true"
         android:src="@drawable/rae_media_play"/>
 
-
     <ProgressBar
         android:id="@+id/progressBar_loading"
+        style="?attr/RaeMediaControllerLoadingStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:indeterminateDrawable="@drawable/rae_media_loading"
         android:visibility="gone"/>
 
     <LinearLayout
@@ -36,13 +37,15 @@
             android:textColor="#FFFFFF"/>
 
         <SeekBar
-
             android:id="@+id/progressBar_media"
-            style="?android:attr/progressBarStyleHorizontal"
+            style="?attr/RaeMediaControllerSeekBarStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:progress="10"/>
+            android:progress="45"
+            android:progressDrawable="@drawable/rae_media_seek_bar"
+            android:secondaryProgress="60"
+            android:thumb="@drawable/rae_media_seek_thumb"/>
 
         <TextView
             android:id="@+id/tv_media_end_time"
